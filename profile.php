@@ -90,7 +90,7 @@ $msg="Profile Updated Successfully";
         
 <!--Header-->
 <?php include('includes/header.php');?>
-<!-- /Header --> 
+<!-- /Header -->
 <!--Page Header-->
 <section class="page-header profile_page">
   <div class="container">
