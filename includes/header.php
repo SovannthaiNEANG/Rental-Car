@@ -34,7 +34,7 @@
             
             </div>
   <?php 
-    if(strlen($_SESSION['login'])==0) {	
+    if(strlen($_SESSION['login']) == 0) {	
   ?>
   <div class="login_btn"> <a href="#loginform" class="btn btn-xs uppercase" data-toggle="modal" data-dismiss="modal">Login / Register</a> </div>
 <?php
