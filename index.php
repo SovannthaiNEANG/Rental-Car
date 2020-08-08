@@ -18,13 +18,13 @@ error_reporting(0);
 <link href="assets/css/slick.css" rel="stylesheet">
 <link href="assets/css/bootstrap-slider.min.css" rel="stylesheet">
 <link href="assets/css/font-awesome.min.css" rel="stylesheet">
-		<link rel="stylesheet" id="switcher-css" type="text/css" href="assets/switcher/css/switcher.css" media="all" />
-		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/red.css" title="red" media="all" data-default-color="true" />
-		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/orange.css" title="orange" media="all" />
-		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/blue.css" title="blue" media="all" />
-		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/pink.css" title="pink" media="all" />
-		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/green.css" title="green" media="all" />
-		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/purple.css" title="purple" media="all" />
+<link rel="stylesheet" id="switcher-css" type="text/css" href="assets/switcher/css/switcher.css" media="all" />
+<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/red.css" title="red" media="all" data-default-color="true" />
+<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/orange.css" title="orange" media="all" />
+<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/blue.css" title="blue" media="all" />
+<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/pink.css" title="pink" media="all" />
+<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/green.css" title="green" media="all" />
+<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/purple.css" title="purple" media="all" />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/favicon-icon/apple-touch-icon-144-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/favicon-icon/apple-touch-icon-114-precomposed.html">
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/favicon-icon/apple-touch-icon-72-precomposed.png">
@@ -35,11 +35,15 @@ error_reporting(0);
 <body>
 
 <!-- Start Switcher -->
-<?php include('includes/colorswitcher.php');?>
+<?php
+  include('includes/colorswitcher.php');
+?>
 <!-- /Switcher -->  
         
 <!--Header-->
-<?php include('includes/header.php');?>
+<?php 
+  include('includes/header.php');
+?>
 <!-- /Header --> 
 
 <!-- Banners -->
@@ -79,36 +83,40 @@ error_reporting(0);
       <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="resentnewcar">
 
-<?php $sql = "SELECT tblvehicles.VehiclesTitle,tblbrands.BrandName,tblvehicles.PricePerDay,tblvehicles.FuelType,tblvehicles.ModelYear,tblvehicles.id,tblvehicles.SeatingCapacity,tblvehicles.VehiclesOverview,tblvehicles.Vimage1 from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand limit 9";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{  
+<?php
+  $query = "SELECT * from tblvehicles 
+            join tblbrands 
+            on tblbrands.id = tblvehicles.VehiclesBrand 
+            limit 9";
+  $results = mysqli_query($conn, $query);
+
+  foreach($results as $result) { 
 ?>  
 
 <div class="col-list-3">
-<div class="recent-car-list">
-<div class="car-info-box"> <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>"><img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" class="img-responsive" alt="image"></a>
-<ul>
-<li><i class="fa fa-car" aria-hidden="true"></i><?php echo htmlentities($result->FuelType);?></li>
-<li><i class="fa fa-calendar" aria-hidden="true"></i><?php echo htmlentities($result->ModelYear);?> Model</li>
-<li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($result->SeatingCapacity);?> seats</li>
-</ul>
+  <div class="recent-car-list">
+    <div class="car-info-box"> <a href="vehical-details.php?vhid=<?php echo $result['id'];?>"><img src="admin/img/vehicleimages/<?php echo $result['Vimage1'];?>" class="img-responsive" alt="image"></a>
+      <ul>
+        <li><i class="fa fa-car" aria-hidden="true"></i><?php echo $result['FuelType'];?></li>
+        <li><i class="fa fa-calendar" aria-hidden="true"></i><?php echo $result['ModelYear'];?> Model</li>
+        <li><i class="fa fa-user" aria-hidden="true"></i><?php echo $result['SeatingCapacity'];?> seats</li>
+      </ul>
+    </div>
+    <div class="car-title-m">
+      <h6>
+        <a href="vehical-details.php?vhid=<?php echo $result['id'];?>"> <?php echo $result['VehiclesTitle'];?></a>
+      </h6>
+      <span class="price">$<?php echo $result['PricePerDay'];?> /Day</span> 
+      </div>
+      <div class="inventory_info_m">
+      <p><?php echo substr($result['VehiclesOverview'],0,70);?></p>
+    </div>
+  </div>
 </div>
-<div class="car-title-m">
-<h6><a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>"> <?php echo htmlentities($result->VehiclesTitle);?></a></h6>
-<span class="price">$<?php echo htmlentities($result->PricePerDay);?> /Day</span> 
-</div>
-<div class="inventory_info_m">
-<p><?php echo substr($result->VehiclesOverview,0,70);?></p>
-</div>
-</div>
-</div>
-<?php }}?>
+
+<?php 
+  }
+?>
        
       </div>
     </div>
@@ -168,30 +176,35 @@ foreach($results as $result)
     </div>
     <div class="row">
       <div id="testimonial-slider">
+
 <?php 
-$tid=1;
-$sql = "SELECT tbltestimonial.Testimonial,tblusers.FullName from tbltestimonial join tblusers on tbltestimonial.UserEmail=tblusers.EmailId where tbltestimonial.status=:tid limit 4";
-$query = $dbh -> prepare($sql);
-$query->bindParam(':tid',$tid, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{  ?>
+  $query = "SELECT
+            tbltestimonial.Testimonial,
+            tblusers.FullName
+            from
+            tbltestimonial
+            join tblusers
+            on tbltestimonial.UserEmail = tblusers.EmailId
+            where tbltestimonial.status = 1 
+            limit 4";
+  $results = mysqli_query($conn, $query);
+
+  foreach($results as $result) { 
+?>
 
 
         <div class="testimonial-m">
  
           <div class="testimonial-content">
             <div class="testimonial-heading">
-              <h5><?php echo htmlentities($result->FullName);?></h5>
-            <p><?php echo htmlentities($result->Testimonial);?></p>
+              <h5><?php echo $result['FullName'];?></h5>
+            <p><?php echo $result['Testimonial'];?></p>
           </div>
         </div>
         </div>
-        <?php }} ?>
+<?php 
+  }
+?>
         
        
   
