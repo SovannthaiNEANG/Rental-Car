@@ -10,11 +10,12 @@ if(isset($_POST['login'])) {
         
   $results = mysqli_query($conn, $query);
 
-  if(mysqli_fetch_array($results)) {
+  $currentPage = $_SERVER['REQUEST_URI'];
+  $row = is_array(mysqli_fetch_array($results));
+  if ($row == 1) {
     $_SESSION['login'] = $_POST['email'];
     $_SESSION['fname'] = $results['FullName'];
-    $currentPage = $_SERVER['REQUEST_URI'];
-    header('Location: '.$currentPage);
+    echo "<script type='text/javascript'> document.location = '$currentPage'; </script>";
   } else{
     echo "<script>alert('Invalid Details');</script>";
   }
