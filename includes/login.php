@@ -13,8 +13,8 @@ if(isset($_POST['login'])) {
   if(mysqli_fetch_array($results)) {
     $_SESSION['login'] = $_POST['email'];
     $_SESSION['fname'] = $results['FullName'];
-    $currentpage = $_SERVER['REQUEST_URI'];
-    echo "<script type='text/javascript'> document.location = '$currentpage'; </script>";
+    $currentPage = $_SERVER['REQUEST_URI'];
+    header('Location: '.$currentPage);
   } else{
     echo "<script>alert('Invalid Details');</script>";
   }

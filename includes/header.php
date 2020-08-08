@@ -60,7 +60,7 @@
             <li class="dropdown"> <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i> 
 <?php 
   $email=$_SESSION['login'];
-  $query ="SELECT FullName FROM tblusers WHERE EmailId=:email ";
+  $query ="SELECT FullName FROM tblusers WHERE EmailId = '$email'";
   $results = mysqli_query($conn, $query);
   foreach($results as $result) {
     echo $result['FullName']; 
