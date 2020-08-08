@@ -7,7 +7,7 @@ if(isset($_POST['login'])) {
   $query = "SELECT EmailId, Password, FullName 
         FROM tblusers 
         WHERE EmailId = '$email' and Password = '$password'";
-        
+
   $results = mysqli_query($conn, $query);
 
   $currentPage = $_SERVER['REQUEST_URI'];
