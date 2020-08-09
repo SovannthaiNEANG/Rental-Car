@@ -146,15 +146,15 @@ foreach($results as $result)
           <ul>
             <li>
               <div class="icon_wrap"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-              <div class="contact_info_m"><?php   echo $result->Address; ?></div>
+              <div class="contact_info_m"><?php   echo $result['Address']; ?></div>
             </li>
             <li>
               <div class="icon_wrap"><i class="fa fa-phone" aria-hidden="true"></i></div>
-              <div class="contact_info_m"><a href="tel:61-1234-567-90"><?php   echo $result->EmailId; ?></a></div>
+              <div class="contact_info_m"><a href="tel:61-1234-567-90"><?php   echo $result['EmailId']; ?></a></div>
             </li>
             <li>
               <div class="icon_wrap"><i class="fa fa-envelope-o" aria-hidden="true"></i></div>
-              <div class="contact_info_m"><a href="mailto:contact@exampleurl.com"><?php   echo $result->ContactNo; ?></a></div>
+              <div class="contact_info_m"><a href="mailto:contact@exampleurl.com"><?php   echo $result['ContactNo']; ?></a></div>
             </li>
           </ul>
         <?php } ?>
