@@ -166,7 +166,7 @@ foreach($results as $result)
               join tblbrands 
               on tblbrands.id = tblvehicles.VehiclesBrand 
               order by id desc limit 4";
-$result = mysqli_query($conn, $query);
+$results = mysqli_query($conn, $query);
 foreach($results as $result)
 {  ?>
 

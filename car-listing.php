@@ -171,7 +171,7 @@ foreach($results as $result)
 
               <li class="gray-bg">
                 <div class="recent_post_img"> <a href="vehical-details.php?vhid=<?php echo $result['id'];?>"><img src="admin/img/vehicleimages/<?php echo $result['Vimage1'];?>" alt="image"></a> </div>
-                <div class="recent_post_title"> <a href="vehical-details.php?vhid=<?php echo $result['id'];?>"><?php echo $re['BrandName'];?> , <?php echo $re['VehiclesTitle'];?></a>
+                <div class="recent_post_title"> <a href="vehical-details.php?vhid=<?php echo $result['id'];?>"><?php echo $result['BrandName'];?> , <?php echo $result['VehiclesTitle'];?></a>
                   <p class="widget_price">$<?php echo $result['PricePerDay'];?> Per Day</p>
                 </div>
               </li>
