@@ -131,7 +131,7 @@ if(strlen($_SESSION['alogin']) == 0) {
 											<td><?php echo $result['RegDate'];?></td>
 										</tr>
 										<?php 
-											 		$cnt = $cnt++; 
+											 		$cnt++; 
 												}
 											} 
 										?>

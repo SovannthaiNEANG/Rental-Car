@@ -133,7 +133,7 @@ foreach($results as $result) {
 												</a>
 											</td>
 										</tr>
-										<?php $cnt = $cnt++; } ?>
+										<?php $cnt++; } ?>
 										
 									</tbody>
 								</table>
