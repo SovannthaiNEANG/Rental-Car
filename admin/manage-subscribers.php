@@ -6,7 +6,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 	header('location:index.php');
 } else {
 	if (isset($_GET['del'])) {
-		$id=$_GET['del'];
+		$id = $_GET['del'];
 		$query = "delete from tblsubscribers  WHERE id = $id";
 		$result = mysqli_query($conn, $query);
 		$msg="Subscriber info deleted";
@@ -104,7 +104,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 									<tbody>
 
 									<?php $query = "SELECT * from tblsubscribers";
-											$result = mysqli_query($conn, $query);
+											$results = mysqli_query($conn, $query);
 											$cnt=1;
 											foreach ($results as $result) {				
 									?>	
