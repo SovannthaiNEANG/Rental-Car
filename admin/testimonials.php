@@ -132,7 +132,7 @@ if (strlen($_SESSION['alogin']) ==0 ) {
 									?>	
 										<tr>
 											<td><?php echo $cnt;?></td>
-											<td><?php echo $resul['FullName'];?></td>
+											<td><?php echo $result['FullName'];?></td>
 											<td><?php echo $result['UserEmail'];?></td>
 											<td><?php echo $result['Testimonial'];?></td>
 											<td><?php echo $result['PostingDate'];?></td>
