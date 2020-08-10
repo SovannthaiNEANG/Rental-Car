@@ -8,7 +8,7 @@ if (strlen($_SESSION['alogin']) == 0) {
 	if (isset($_REQUEST['eid'])) {
 		$eid=intval($_GET['eid']);
 		$status = 1;
-		$sql = "UPDATE tblcontactusquery SET status = $status WHERE  id = $eid";
+		$query = "UPDATE tblcontactusquery SET status = $status WHERE  id = $eid";
 		$result = mysqli_query($conn, $query);
 	}
 ?>
