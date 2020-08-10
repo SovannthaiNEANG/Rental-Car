@@ -7,7 +7,7 @@ if(strlen($_SESSION['alogin']) == 0) {
 } else { 
 	if(isset($_GET['del'])) {
 		$id = $_GET['del'];
-		$sql = "delete from tblbrands WHERE id = $id";
+		$query = "delete from tblbrands WHERE id = $id";
 		$result = mysqli_query($conn, $query);
 		$msg = "Page data updated  successfully";
 	}
@@ -131,7 +131,7 @@ if(strlen($_SESSION['alogin']) == 0) {
 											<td><?php echo $result['RegDate'];?></td>
 										</tr>
 										<?php 
-											 		$cnt=$cnt+1; 
+											 		$cnt = $cnt++; 
 												}
 											} 
 										?>
