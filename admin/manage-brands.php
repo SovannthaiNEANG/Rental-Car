@@ -2,25 +2,16 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
-	{	
-header('location:index.php');
-}
-else{
-if(isset($_GET['del']))
-{
-$id=$_GET['del'];
-$sql = "delete from tblbrands  WHERE id=:id";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':id',$id, PDO::PARAM_STR);
-$query -> execute();
-$msg="Page data updated  successfully";
-
-}
-
-
-
- ?>
+if (strlen($_SESSION['alogin']) == 0) {	
+	header('location:index.php');
+} else {
+	if (isset($_GET['del'])) {
+		$id=$_GET['del'];
+		$query = "delete from tblbrands  WHERE id = $id";
+		$result = mysqli_query($conn, $query);
+		$msg="Page data updated  successfully";
+	}
+?>
 
 <!doctype html>
 <html lang="en" class="no-js">
@@ -68,7 +59,7 @@ $msg="Page data updated  successfully";
     -webkit-box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
     box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
 }
-		</style>
+</style>
 
 </head>
 
@@ -89,60 +80,55 @@ $msg="Page data updated  successfully";
 						<div class="panel panel-default">
 							<div class="panel-heading">Listed  Brands</div>
 							<div class="panel-body">
-							<?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
-				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
+							<?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo $error; ?> </div><?php } 
+				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo $msg; ?> </div><?php }?>
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
-										<th>#</th>
-												<th>Brand Name</th>
+											<th>#</th>
+											<th>Brand Name</th>
 											<th>Creation Date</th>
-											<th>Updation date</th>
-										
+											<th>Updating date</th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr>
-										<th>#</th>
+											<th>#</th>
 											<th>Brand Name</th>
 											<th>Creation Date</th>
-											<th>Updation date</th>
-										
+											<th>Updating date</th>
 											<th>Action</th>
-										</tr>
 										</tr>
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT * from  tblbrands ";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{				?>	
+									<?php $query = "SELECT * from  tblbrands ";
+											$results = mysqli_query($conn, $query);
+											$cnt=1;
+											foreach ($results as $result) {
+									?>	
 										<tr>
-											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($result->BrandName);?></td>
-											<td><?php echo htmlentities($result->CreationDate);?></td>
-											<td><?php echo htmlentities($result->UpdationDate);?></td>
-<td><a href="edit-brand.php?id=<?php echo $result->id;?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
-<a href="manage-brands.php?del=<?php echo $result->id;?>" onclick="return confirm('Do you want to delete');"><i class="fa fa-close"></i></a></td>
+											<td><?php echo $cnt;?></td>
+											<td><?php echo $result['BrandName'];?></td>
+											<td><?php echo $result['CreationDate'];?></td>
+											<td><?php echo $result['UpdationDate'];?></td>
+											<td>
+												<a href="edit-brand.php?id=<?php echo $result['id'];?>">
+													<i class="fa fa-edit"></i>
+												</a>&nbsp;&nbsp;
+												<a href="manage-brands.php?del=<?php echo $result['id'];?>" onclick="return confirm('Do you want to delete');">
+													<i class="fa fa-close"></i>
+												</a>
+											</td>
 										</tr>
-										<?php $cnt=$cnt+1; }} ?>
+										<?php $cnt++; } ?>
 										
 									</tbody>
 								</table>
 
-						
-
 							</div>
 						</div>
-
-					
 
 					</div>
 				</div>

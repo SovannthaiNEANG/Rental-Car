@@ -2,27 +2,16 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
-	{	
-header('location:index.php');
-}
-else{
-if(isset($_REQUEST['eid']))
-	{
-$eid=intval($_GET['eid']);
-$status=1;
-$sql = "UPDATE tblcontactusquery SET status=:status WHERE  id=:eid";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
-$query-> bindParam(':eid',$eid, PDO::PARAM_STR);
-$query -> execute();
-
-
-}
-
-
-
- ?>
+if (strlen($_SESSION['alogin']) == 0) {	
+	header('location:index.php');
+} else {
+	if (isset($_REQUEST['eid'])) {
+		$eid=intval($_GET['eid']);
+		$status = 1;
+		$query = "UPDATE tblcontactusquery SET status = $status WHERE  id = $eid";
+		$result = mysqli_query($conn, $query);
+	}
+?>
 
 <!doctype html>
 <html lang="en" class="no-js">
@@ -95,7 +84,7 @@ $query -> execute();
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
-										<th>#</th>
+											<th>#</th>
 											<th>Name</th>
 											<th>Email</th>
 											<th>Contact No</th>
@@ -106,7 +95,7 @@ $query -> execute();
 									</thead>
 									<tfoot>
 										<tr>
-										<th>#</th>
+											<th>#</th>
 											<th>Name</th>
 											<th>Email</th>
 											<th>Contact No</th>
@@ -118,32 +107,29 @@ $query -> execute();
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT * from  tblcontactusquery ";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{				?>	
+									<?php $query = "SELECT * from  tblcontactusquery ";
+											$results = mysqli_query($conn, $query);
+											$cnt=1;
+											foreach($results as $result) {
+									?>	
 										<tr>
-											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($result->name);?></td>
-											<td><?php echo htmlentities($result->EmailId);?></td>
-											<td><?php echo htmlentities($result->ContactNumber);?></td>
-											<td><?php echo htmlentities($result->Message);?></td>
-											<td><?php echo htmlentities($result->PostingDate);?></td>
-																<?php if($result->status==1)
-{
-	?><td>Read</td>
-<?php } else {?>
-
-<td><a href="manage-conactusquery.php?eid=<?php echo htmlentities($result->id);?>" onclick="return confirm('Do you really want to read')" >Pending</a>
-</td>
-<?php } ?>
+											<td><?php echo $cnt;?></td>
+											<td><?php echo $result['name'];?></td>
+											<td><?php echo $result['EmailId'];?></td>
+											<td><?php echo $result['ContactNumber'];?></td>
+											<td><?php echo $result['Message'];?></td>
+											<td><?php echo $result['PostingDate'];?></td>
+											<?php 
+												if ($result['status'] == 1) {
+											?>
+											<td>Read</td>
+											<?php } else {?>
+											<td>
+												<a href="manage-conactusquery.php?eid=<?php echo $result['id'];?>" onclick="return confirm('Do you really want to read')" >Pending</a>
+											</td>
+											<?php } ?>
 										</tr>
-										<?php $cnt=$cnt+1; }} ?>
+										<?php $cnt++; } ?>
 										
 									</tbody>
 								</table>

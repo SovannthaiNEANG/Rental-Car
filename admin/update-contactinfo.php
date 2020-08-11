@@ -2,25 +2,18 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
-	{	
-header('location:index.php');
-}
-else{
+if(strlen($_SESSION['alogin']) == 0){	
+	header('location:index.php');
+} else {
 // Code for change password	
-if(isset($_POST['submit']))
-{
-$address=$_POST['address'];
-$email=$_POST['email'];	
-$contactno=$_POST['contactno'];
-$sql="update tblcontactusinfo set Address=:address,EmailId=:email,ContactNo=:contactno";
-$query = $dbh->prepare($sql);
-$query->bindParam(':address',$address,PDO::PARAM_STR);
-$query->bindParam(':email',$email,PDO::PARAM_STR);
-$query->bindParam(':contactno',$contactno,PDO::PARAM_STR);
-$query->execute();
-$msg="Info Updateed successfully";
-}
+	if (isset($_POST['submit'])) {
+		$address = $_POST['address'];
+		$email = $_POST['email'];	
+		$contactno = $_POST['contactno'];
+		$query = "update tblcontactusinfo set Address = '$address', EmailId = '$email', ContactNo = '$contactno'";
+		$result = mysqli_query($conn, $query);
+		$msg = "Info Updateed successfully";
+	}
 ?>
 
 <!doctype html>
@@ -94,37 +87,33 @@ $msg="Info Updateed successfully";
 										<form method="post" name="chngpwd" class="form-horizontal" onSubmit="return valid();">
 										
 											
-  	        	  <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
-				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
-				<?php $sql = "SELECT * from  tblcontactusinfo ";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{				?>	
-
+  	        	  <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo $error; ?> </div><?php } 
+				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo $msg; ?> </div><?php }?>
+				<?php 
+					$query = "SELECT * from  tblcontactusinfo";
+					$results = mysqli_query($conn, $query);
+					$cnt = 1;
+					foreach($results as $result) {
+				?>
 				<div class="form-group">
 												<label class="col-sm-4 control-label"> Address</label>
 												<div class="col-sm-8">
-													<textarea class="form-control" name="address" id="address" required><?php echo htmlentities($result->Address);?></textarea>
+													<textarea class="form-control" name="address" id="address" required><?php echo $result['Address'];?></textarea>
 												</div>
 											</div>
 											<div class="form-group">
 												<label class="col-sm-4 control-label"> Email id</label>
 												<div class="col-sm-8">
-													<input type="email" class="form-control" name="email" id="email" value="<?php echo htmlentities($result->EmailId);?>" required>
+													<input type="email" class="form-control" name="email" id="email" value="<?php echo $result['EmailId'];?>" required>
 												</div>
 											</div>
 <div class="form-group">
 												<label class="col-sm-4 control-label"> Contact Number </label>
 												<div class="col-sm-8">
-													<input type="text" class="form-control" value="<?php echo htmlentities($result->ContactNo);?>" name="contactno" id="contactno" required>
+													<input type="text" class="form-control" value="<?php echo $result['ContactNo'];?>" name="contactno" id="contactno" required>
 												</div>
 											</div>
-<?php }} ?>
+<?php } ?>
 											<div class="hr-dashed"></div>
 											
 										
