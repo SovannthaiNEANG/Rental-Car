@@ -1,58 +1,50 @@
 <?php
+include('config.php');
 //error_reporting(0);
-if(isset($_POST['signup']))
-{
-$fname=$_POST['fullname'];
-$email=$_POST['emailid']; 
-$mobile=$_POST['mobileno'];
-$password=md5($_POST['password']); 
-$sql="INSERT INTO  tblusers(FullName,EmailId,ContactNo,Password) VALUES(:fname,:email,:mobile,:password)";
-$query = $dbh->prepare($sql);
-$query->bindParam(':fname',$fname,PDO::PARAM_STR);
-$query->bindParam(':email',$email,PDO::PARAM_STR);
-$query->bindParam(':mobile',$mobile,PDO::PARAM_STR);
-$query->bindParam(':password',$password,PDO::PARAM_STR);
-$query->execute();
-$lastInsertId = $dbh->lastInsertId();
-if($lastInsertId)
-{
-echo "<script>alert('Registration successfull. Now you can login');</script>";
-}
-else 
-{
-echo "<script>alert('Something went wrong. Please try again');</script>";
-}
+if(isset($_POST['signup'])) {
+  $fname=$_POST['fullname'];
+  $email=$_POST['emailid']; 
+  $mobile=$_POST['mobileno'];
+  $password=md5($_POST['password']); 
+  $query = "INSERT INTO  tblusers(FullName, EmailId, ContactNo, Password)
+           VALUES('$fname', '$email', '$mobile', '$password')";
+  
+  $result = mysqli_query($conn, $query);
+
+  if($result) {
+    echo "<script>alert('Registration successfull. Now you can login');</script>";
+  } else {
+    echo "<script>alert('Something went wrong. Please try again');</script>";
+  }
 }
 
 ?>
 
 
 <script>
-function checkAvailability() {
-$("#loaderIcon").show();
-jQuery.ajax({
-url: "check_availability.php",
-data:'emailid='+$("#emailid").val(),
-type: "POST",
-success:function(data){
-$("#user-availability-status").html(data);
-$("#loaderIcon").hide();
-},
-error:function (){}
-});
-}
+  function checkAvailability() {
+    $("#loaderIcon").show();
+      jQuery.ajax({
+        url: "check_availability.php",
+        data:'emailid='+$("#emailid").val(),
+        type: "POST",
+        success:function(data){
+        $("#user-availability-status").html(data);
+        $("#loaderIcon").hide();
+      },
+      error:function (){}
+    });
+  }
 </script>
 <script type="text/javascript">
-function valid()
-{
-if(document.signup.password.value!= document.signup.confirmpassword.value)
-{
-alert("Password and Confirm Password Field do not match  !!");
-document.signup.confirmpassword.focus();
-return false;
-}
-return true;
-}
+    function valid() {
+      if(document.signup.password.value!= document.signup.confirmpassword.value) {
+        alert("Password and Confirm Password Field do not match  !!");
+        document.signup.confirmpassword.focus();
+        return false;
+      }
+    return true;
+  }
 </script>
 <div class="modal fade" id="signupform">
   <div class="modal-dialog" role="document">

@@ -1,26 +1,24 @@
 <?php
-if(isset($_POST['login']))
-{
-$email=$_POST['email'];
-$password=md5($_POST['password']);
-$sql ="SELECT EmailId,Password,FullName FROM tblusers WHERE EmailId=:email and Password=:password";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':email', $email, PDO::PARAM_STR);
-$query-> bindParam(':password', $password, PDO::PARAM_STR);
-$query-> execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-if($query->rowCount() > 0)
-{
-$_SESSION['login']=$_POST['email'];
-$_SESSION['fname']=$results->FullName;
-$currentpage=$_SERVER['REQUEST_URI'];
-echo "<script type='text/javascript'> document.location = '$currentpage'; </script>";
-} else{
-  
-  echo "<script>alert('Invalid Details');</script>";
+include('config.php');
 
-}
+if(isset($_POST['login'])) {
+  $email = $_POST['email'];
+  $password = md5($_POST['password']);
+  $query = "SELECT EmailId, Password, FullName 
+        FROM tblusers 
+        WHERE EmailId = '$email' and Password = '$password'";
 
+  $results = mysqli_query($conn, $query);
+
+  $currentPage = $_SERVER['REQUEST_URI'];
+  $row = is_array(mysqli_fetch_array($results));
+  if ($row == 1) {
+    $_SESSION['login'] = $_POST['email'];
+    $_SESSION['fname'] = $results['FullName'];
+    echo "<script type='text/javascript'> document.location = '$currentPage'; </script>";
+  } else{
+    echo "<script>alert('Invalid Details');</script>";
+  }
 }
 
 ?>
