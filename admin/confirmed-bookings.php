@@ -2,13 +2,10 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
-	{	
-header('location:index.php');
-}
-else{
-
- ?>
+if (strlen($_SESSION['alogin']) == 0) {	
+	header('location:index.php');
+} else {
+?>
 
 <!doctype html>
 <html lang="en" class="no-js">
@@ -81,7 +78,7 @@ else{
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
-										<th>#</th>
+											<th>#</th>
 											<th>Name</th>
 											<th>Booking No.</th>
 											<th>Vehicle</th>
@@ -94,8 +91,8 @@ else{
 									</thead>
 									<tfoot>
 										<tr>
-										<th>#</th>
-										<th>Name</th>
+											<th>#</th>
+											<th>Name</th>
 											<th>Booking No.</th>
 											<th>Vehicle</th>
 											<th>From Date</th>
@@ -108,59 +105,53 @@ else{
 									<tbody>
 
 									<?php 
-
-$status=1;
-									$sql = "SELECT tblusers.FullName,tblbrands.BrandName,tblvehicles.VehiclesTitle,tblbooking.FromDate,tblbooking.ToDate,tblbooking.message,tblbooking.VehicleId as vid,tblbooking.Status,tblbooking.PostingDate,tblbooking.id,tblbooking.BookingNumber  from tblbooking join tblvehicles on tblvehicles.id=tblbooking.VehicleId join tblusers on tblusers.EmailId=tblbooking.userEmail join tblbrands on tblvehicles.VehiclesBrand=tblbrands.id   where tblbooking.Status=:status";
-$query = $dbh -> prepare($sql);
-$query -> bindParam(':status',$status, PDO::PARAM_STR);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{				?>	
+										$status = 1;
+										$query = "SELECT tblusers.FullName, tblbrands.BrandName, tblvehicles.VehiclesTitle, tblbooking.FromDate, tblbooking.ToDate,
+												tblbooking.message, tblbooking.VehicleId as vid, tblbooking.Status, tblbooking.PostingDate, 
+												tblbooking.id, tblbooking.BookingNumber 
+												from tblbooking 
+												join tblvehicles 
+												on tblvehicles.id = tblbooking.VehicleId 
+												join tblusers 
+												on tblusers.EmailId = tblbooking.userEmail 
+												join tblbrands 
+												on tblvehicles.VehiclesBrand = tblbrands.id
+												where tblbooking.Status = $status";
+										$results = mysqli_query($conn, $query);
+										$cnt = 1;
+										foreach($results as $result) {
+									?>	
 										<tr>
-											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($result->FullName);?></td>
-											<td><?php echo htmlentities($result->BookingNumber);?></td>
-											<td><a href="edit-vehicle.php?id=<?php echo htmlentities($result->vid);?>"><?php echo htmlentities($result->BrandName);?> , <?php echo htmlentities($result->VehiclesTitle);?></td>
-											<td><?php echo htmlentities($result->FromDate);?></td>
-											<td><?php echo htmlentities($result->ToDate);?></td>
-											<td><?php 
-if($result->Status==0)
-{
-echo htmlentities('Not Confirmed yet');
-} else if ($result->Status==1) {
-echo htmlentities('Confirmed');
-}
- else{
- 	echo htmlentities('Cancelled');
- }
-										?></td>
-											<td><?php echo htmlentities($result->PostingDate);?></td>
+											<td><?php echo $cnt;?></td>
+											<td><?php echo $result['FullName'];?></td>
+											<td><?php echo $result['BookingNumber'];?></td>
+											<td><a href="edit-vehicle.php?id=<?php echo $result['vid'];?>"><?php echo $result['BrandName'];?> , <?php echo $result['VehiclesTitle'];?></td>
+											<td><?php echo $result['FromDate'];?></td>
+											<td><?php echo $result['ToDate'];?></td>
+											<td>
+											<?php 
+												if( $result['Status'] == 0) {
+													echo ('Not Confirmed yet');
+												} else if ($result['Status'] == 1) {
+													echo ('Confirmed');
+												} else {
+													echo ('Cancelled');
+												}
+											?>
+											</td>
+											<td><?php echo $result['PostingDate'];?></td>
 										<td>
-
-
-<a href="bookig-details.php?bid=<?php echo htmlentities($result->id);?>"> View</a>
-</td>
+											<a href="bookig-details.php?bid=<?php echo $result['id'];?>"> View</a>
+										</td>
 
 										</tr>
-										<?php $cnt=$cnt+1; }} ?>
-										
+										<?php $cnt++; } ?>
 									</tbody>
 								</table>
-
-						
-
 							</div>
 						</div>
-
-					
-
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>

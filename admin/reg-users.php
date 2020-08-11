@@ -2,23 +2,15 @@
 session_start();
 error_reporting(0);
 include('includes/config.php');
-if(strlen($_SESSION['alogin'])==0)
-	{	
-header('location:index.php');
-}
-else{
-if(isset($_GET['del']))
-{
-$id=$_GET['del'];
-$sql = "delete from tblbrands  WHERE id=:id";
-$query = $dbh->prepare($sql);
-$query -> bindParam(':id',$id, PDO::PARAM_STR);
-$query -> execute();
-$msg="Page data updated  successfully";
-
-}
-
-
+if(strlen($_SESSION['alogin']) == 0) {	
+	header('location:index.php');
+} else { 
+	if(isset($_GET['del'])) {
+		$id = $_GET['del'];
+		$query = "delete from tblbrands WHERE id = $id";
+		$result = mysqli_query($conn, $query);
+		$msg = "Page data updated  successfully";
+	}
 
  ?>
 
@@ -89,29 +81,28 @@ $msg="Page data updated  successfully";
 						<div class="panel panel-default">
 							<div class="panel-heading">Reg Users</div>
 							<div class="panel-body">
-							<?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
-				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
+							<?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo $error; ?> </div><?php } 
+				else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo $msg; ?> </div><?php }?>
 								<table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 									<thead>
 										<tr>
-										<th>#</th>
-												<th> Name</th>
+											<th>#</th>
+											<th> Name</th>
 											<th>Email </th>
 											<th>Contact no</th>
-										<th>DOB</th>
-										<th>Address</th>
-										<th>City</th>
-										<th>Country</th>
-										<th>Reg Date</th>
-										
+											<th>DOB</th>
+											<th>Address</th>
+											<th>City</th>
+											<th>Country</th>
+											<th>Reg Date</th>
 										</tr>
 									</thead>
 									<tfoot>
 										<tr>
 										<th>#</th>
-											<th> Name</th>
-											<th>Email </th>
-											<th>Contact no</th>
+										<th> Name</th>
+										<th>Email </th>
+										<th>Contact no</th>
 										<th>DOB</th>
 										<th>Address</th>
 										<th>City</th>
@@ -122,27 +113,28 @@ $msg="Page data updated  successfully";
 									</tfoot>
 									<tbody>
 
-									<?php $sql = "SELECT * from  tblusers ";
-$query = $dbh -> prepare($sql);
-$query->execute();
-$results=$query->fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query->rowCount() > 0)
-{
-foreach($results as $result)
-{				?>	
+									<?php 
+										$query = "SELECT * from  tblusers ";
+										$results = mysqli_query($conn, $query);
+										$cnt = 1;
+										foreach($results as $result) {				
+									?>	
 										<tr>
-											<td><?php echo htmlentities($cnt);?></td>
-											<td><?php echo htmlentities($result->FullName);?></td>
-											<td><?php echo htmlentities($result->EmailId);?></td>
-											<td><?php echo htmlentities($result->ContactNo);?></td>
-	<td><?php echo htmlentities($result->dob);?></td>
-											<td><?php echo htmlentities($result->Address);?></td>
-											<td><?php echo htmlentities($result->City);?></td>
-											<td><?php echo htmlentities($result->Country);?></td>
-											<td><?php echo htmlentities($result->RegDate);?></td>
+											<td><?php echo $index + 1;?></td>
+											<td><?php echo $result['FullName'];?></td>
+											<td><?php echo $result['EmailId'];?></td>
+											<td><?php echo $result['ContactNo'];?></td>
+											<td><?php echo $result['dob'];?></td>
+											<td><?php echo $result['Address'];?></td>
+											<td><?php echo $result['City'];?></td>
+											<td><?php echo $result['Country'];?></td>
+											<td><?php echo $result['RegDate'];?></td>
 										</tr>
-										<?php $cnt=$cnt+1; }} ?>
+										<?php 
+											 		$cnt++; 
+												}
+											} 
+										?>
 										
 									</tbody>
 								</table>
@@ -173,4 +165,3 @@ foreach($results as $result)
 	<script src="js/main.js"></script>
 </body>
 </html>
-<?php } ?>
